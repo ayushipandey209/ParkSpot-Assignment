@@ -1,0 +1,15 @@
+# Android / Gradle
+*.iml
+.gradle/
+/local.properties
+.idea/
+.DS_Store
+/build
+/captures
+.externalNativeBuild
+.cxx
+app/build/
+
+# Firebase — DO NOT commit real credentials.
+# Each developer/grader supplies their own from their Firebase project.
+app/google-services.json

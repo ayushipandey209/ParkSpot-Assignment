@@ -1,0 +1,61 @@
+rules_version = '2';
+
+// ParkSpot security rules.
+//
+// Two collections:
+//   reservations/{id}   — one per booking, owned by a user
+//   slotLocks/{lockId}  — one per (slot, 30-min bucket); its existence == taken
+//
+// The brief requires that a user can only create/cancel their OWN reservations.
+// We enforce that here, and additionally make slotLocks create-only so a bucket
+// can never be claimed twice even by a hand-rolled client — the rules-level half
+// of the no-double-booking guarantee.
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(uid) {
+      return signedIn() && request.auth.uid == uid;
+    }
+
+    match /reservations/{reservationId} {
+      // Everyone signed in can see availability.
+      allow read: if signedIn();
+
+      // You may only create a reservation stamped with your own uid.
+      allow create: if isOwner(request.resource.data.userId)
+                    && request.resource.data.slotId is string
+                    && request.resource.data.startMillis is int
+                    && request.resource.data.endMillis is int
+                    && request.resource.data.endMillis > request.resource.data.startMillis;
+
+      // Cancel == delete, and only your own.
+      allow delete: if isOwner(resource.data.userId);
+
+      // Reservations are immutable; no in-place edits.
+      allow update: if false;
+    }
+
+    match /slotLocks/{lockId} {
+      allow read: if signedIn();
+
+      // CREATE-ONLY. Firestore fires `create` only when the document does not
+      // already exist. A racing second claimant therefore hits `update` below,
+      // which is denied — so a lock (and thus a slot/time bucket) can be
+      // claimed at most once.
+      allow create: if isOwner(request.resource.data.userId)
+                    && request.resource.data.slotId is string
+                    && request.resource.data.bucketIndex is int
+                    && request.resource.data.reservationId is string;
+
+      allow update: if false;
+
+      // Free the slot only if it's your lock.
+      allow delete: if isOwner(resource.data.userId);
+    }
+  }
+}

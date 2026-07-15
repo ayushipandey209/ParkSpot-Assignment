@@ -1,0 +1,5 @@
+{
+  "//": "All queries are single-field (slotLocks.bucketIndex range; reservations.userId equality) and use Firestore's automatic single-field indexes. No composite indexes are required.",
+  "indexes": [],
+  "fieldOverrides": []
+}
