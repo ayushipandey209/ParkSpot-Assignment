@@ -5,4 +5,5 @@ plugins {
     id("org.jetbrains.kotlin.plugin.compose") version "2.0.20" apply false
     // Google Services plugin — reads app/google-services.json
     id("com.google.gms.google-services") version "4.4.2" apply false
+
 }

@@ -18,9 +18,15 @@ object TimeGrid {
 
     fun slotLabel(slot: Int): String {
         val minutes = slot * TimeBucket.BUCKET_MINUTES
-        val h = minutes / 60
+        val totalHours = minutes / 60
         val m = minutes % 60
-        return "%02d:%02d".format(h, m)
+        val amPm = if (totalHours >= 12) "pm" else "am"
+        val h = when {
+            totalHours == 0L -> 12
+            totalHours > 12 -> totalHours - 12
+            else -> totalHours
+        }
+        return "%d:%02d %s".format(h, m, amPm)
     }
 
     fun dateLabel(date: LocalDate): String = date.format(dateFmt)
