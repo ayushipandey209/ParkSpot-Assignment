@@ -14,7 +14,7 @@ package com.zobaze.parkspot.data
 object TimeBucket {
 
     /** Bucket width. 30 minutes → reservations must align to :00 / :30. */
-    const val BUCKET_MINUTES: Long = 30
+    const val BUCKET_MINUTES: Long = 30 // if needed we can chnge the timing to 60 min if min 1 hr slot booking
     private const val BUCKET_MILLIS: Long = BUCKET_MINUTES * 60 * 1000
 
     /** Floor of an epoch-millis instant to its bucket index. */

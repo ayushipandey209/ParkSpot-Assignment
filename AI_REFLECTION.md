@@ -75,3 +75,4 @@ will happily default either way on; it's on me to decide.
 > record the real outcome here (including anything that *didn't* behave as
 > expected) once I've run it — that observation, not the theory above, is the
 > real proof.
+> i have shared the working video drive link 

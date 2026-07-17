@@ -58,3 +58,6 @@ second windows would need a finer bucket size (more lock docs per booking) or
 an interval-overlap structure, which Firestore isn't built for. For a parking
 board, 30-minute granularity is the right call; the bucket width is a single
 constant (`TimeBucket.BUCKET_MINUTES`) if it ever needs to change.
+
+## I used Antigravity for File Structure and Code writing
+
