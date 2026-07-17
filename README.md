@@ -31,24 +31,6 @@ Data model in Firestore:
 - `slotLocks/{slotId__bucketIndex}` — `{ slotId, bucketIndex, userId, reservationId }`
   One doc per (slot, 30-min bucket); its **existence** means that bucket is taken.
 
-## Setup (do this once)
-
-You need to point the app at **your own** Firebase project — no credentials are
-committed to this repo.
-
-1. **Create a Firebase project** at <https://console.firebase.google.com> (free
-   Spark tier is enough).
-2. **Enable Authentication → Sign-in method → Email/Password.**
-3. **Create a Cloud Firestore database** (Production mode).
-4. **Register an Android app** in the project with package name
-   **`com.zobaze.parkspot`**. Download the generated **`google-services.json`**
-   and drop it into **`app/google-services.json`**.
-5. **Deploy the security rules** (from this folder, with the Firebase CLI):
-   ```bash
-   firebase deploy --only firestore:rules
-   ```
-   (or paste `firestore.rules` into Console → Firestore → Rules → Publish).
-6. **Build & run** from Android Studio (or `./gradlew installDebug`). minSdk 26.
 
 ## How to test the no-double-booking guarantee
 
